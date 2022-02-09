@@ -121,6 +121,7 @@
     <Folder Include="Security\" />
     <Folder Include="dbo" />
     <Folder Include="dbo\Tables" />
+    <Folder Include="dbo\Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\Permissions.sql" />
@@ -133,5 +134,9 @@
     <Build Include="dbo\Tables\Room_Book.sql" />
     <Build Include="dbo\Tables\Accounting.sql" />
     <Build Include="dbo\Tables\Booking.sql" />
+    <Build Include="dbo\Triggers\AccountingInsert.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dbo\inserts.sql" />
   </ItemGroup>
 </Project>

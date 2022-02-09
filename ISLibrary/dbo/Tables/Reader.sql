@@ -9,6 +9,7 @@
 	Education NVARCHAR(10),
 	IsDegreeScientific BIT DEFAULT 0,
 	DateReRegistration DATE DEFAULT GETDATE(),
+	IsExclusion BIT NOT NULL DEFAULT 0,
 
-	CONSTRAINT Check_Education CHECK (Education IN ('початкова','середня','вища'))
+	CONSTRAINT Check_Education CHECK (Education IN (N'початкова', N'середня', N'вища'))
 )
