@@ -1,0 +1,11 @@
+﻿CREATE TABLE Book
+(
+	Code INT IDENTITY(1,1) PRIMARY KEY, 
+	Name NVARCHAR(100) NOT NULL,
+	EditionId INT NOT NULL,
+	Year INT NOT NULL ,
+
+	CONSTRAINT check_year CHECK(Year<=YEAR(GETDATE())),
+	CONSTRAINT FK_Book_Edition FOREIGN KEY (EditionId) REFERENCES Edition(Id)
+)
+

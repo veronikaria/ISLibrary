@@ -1,0 +1,11 @@
+﻿CREATE TABLE Booking
+(
+	Id INT IDENTITY(1,1) PRIMARY KEY,  
+	Code_Book INT NOT NULL,
+	Ticket_Number INT NOT NULL,
+	DateGetBook DATETIME NOT NULL DEFAULT GETDATE(),
+	DateReturnBook DATETIME NULL,
+
+	CONSTRAINT FK_Booking_Book FOREIGN KEY (Code_Book) REFERENCES Book(Code),
+	CONSTRAINT FK_Booking_Reader FOREIGN KEY (Ticket_Number) REFERENCES Reader(Ticket_Number)
+)

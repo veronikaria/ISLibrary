@@ -125,5 +125,13 @@
   <ItemGroup>
     <Build Include="Security\Permissions.sql" />
     <Build Include="dbo\Tables\Edition.sql" />
+    <Build Include="dbo\Tables\Book.sql" />
+    <Build Include="dbo\Tables\Author.sql" />
+    <Build Include="dbo\Tables\Book_Author.sql" />
+    <Build Include="dbo\Tables\Reader.sql" />
+    <Build Include="dbo\Tables\Room.sql" />
+    <Build Include="dbo\Tables\Room_Book.sql" />
+    <Build Include="dbo\Tables\Accounting.sql" />
+    <Build Include="dbo\Tables\Booking.sql" />
   </ItemGroup>
 </Project>
