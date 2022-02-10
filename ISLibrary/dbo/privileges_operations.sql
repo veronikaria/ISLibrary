@@ -21,6 +21,8 @@ GRANT INSERT ON Book TO Librarian;
 GRANT UPDATE ON Book TO Librarian;
 GRANT DELETE ON Book TO Librarian;
 
+
+
 EXECUTE AS USER='Librarian'
 SELECT b.Name FROM Reader r
 JOIN Accounting a ON a.Ticket_Number=r.Ticket_Number
@@ -195,4 +197,139 @@ WHERE Education=N'вища') HigherEducation,
 WHERE IsDegreeScientific=1) DegreeScientific
 REVERT
 GO
+
+
+
+
+-- Записать в библиотеку нового читателя.
+EXECUTE AS USER='Librarian'
+INSERT INTO Reader
+(
+	Ticket_Number,
+	Lastname,
+	Passport,
+	Birthdate,
+	Address,
+	Phone,
+	Education,
+	IsDegreeScientific,
+	DateRegistration
+)
+VALUES
+(10, N'Марков', '971142112', '2000-03-11', N'Київ, вул. Стуса 17/13', '+380951981001', N'середня', 0, '2021-12-20')
+REVERT
+GO
+
+
+EXECUTE AS USER='Librarian'
+SELECT * FROM Reader
+REVERT
+GO
+
+
+-- Исключить из списка читателей людей, которые записались в библиотеку больше года назад и не прошли перерегистрацию.
+-- TRIGGER DeleteReaderNotReregisteredMoreYear (в папке Triggers)
+-- Проверка работы триггера:
+EXECUTE AS USER='Librarian'
+DELETE FROM Reader
+WHERE DATEDIFF(yy, DateRegistration, GETDATE())>=1
+AND DateReRegistration IS NULL
+REVERT
+GO
+
+
+EXECUTE AS USER='Librarian'
+SELECT * FROM Reader
+REVERT
+GO
+
+
+
+-- Списать старую или утраченную книгу.
+-- TRIGGER DeleteOldOrLostBook (в папке Triggers)
+-- Проверка работы триггера:
+EXECUTE AS USER='Librarian'
+DELETE FROM Book
+WHERE Code=7
+REVERT
+GO
+
+
+EXECUTE AS USER='Librarian'
+SELECT * FROM Book
+REVERT
+GO
+
+
+-- Принять книгу в библиотеке фонда.
+EXECUTE AS USER='Librarian'
+INSERT INTO Book
+(Code, Name, EditionId, Year)
+VALUES
+(8, N'Берестечко', 2, 2015)
+REVERT
+GO
+
+
+EXECUTE AS USER='Librarian'
+SELECT * FROM Book
+REVERT
+GO
+
+
+
+-- Выдача справки о количестве книг автора в читальном зале
+
+
+-- поиск автора по идентификатору
+-- FUNCTION QuantityBooksByAuthorId(@id INT) - в папке Functions
+-- Проверка работы функции:
+
+SELECT dbo.QuantityBooksByAuthorId(4) AS QuantityBooks
+SELECT dbo.QuantityBooksByAuthorId(7) AS QuantityBooks
+
+
+-- поиск автора по ФИО
+-- FUNCTION QuantityBooksByAuthorPIB(@lastname NVARCHAR(50), @firstname NVARCHAR(50), @middlename NVARCHAR(50))
+-- Проверка работы функции:
+
+SELECT dbo.QuantityBooksByAuthorPIB(N'Голон', N'Анн', NULL) AS QuantityBooks
+SELECT dbo.QuantityBooksByAuthorPIB(N'Костенко', N'Ліна', N'Василівна') AS QuantityBooks
+
+
+-- отчет о работе библиотеки в течение месяца
+-- количество книг и читателей на текущий день в каждом из залов и в библиотеке в целом
+-- PROCEDURE ReportQuantityBooksAndReaders(@month INT)
+-- Проверка работы процедуры:
+
+EXEC ReportQuantityBooksAndReaders 12 
+
+
+
+-- количество читателей, записавшихся в библиотеку за отчетный месяц
+-- FUNCTION QuantityReadersByMonth(@month INT)
+-- Проверка работы функции:
+
+SELECT dbo.QuantityReadersByMonth(12) AS QuantityReaders
+
+
+
+-- какие книги и сколько раз были взяты за отчетный месяц
+-- PROCEDURE ReportNameAndQuantityBooksByMonth(@month INT)
+-- Проверка работы процедуры:
+
+EXECUTE ReportNameAndQuantityBooksByMonth 12 
+EXECUTE ReportNameAndQuantityBooksByMonth 10 
+
+
+
+-- кто из читателей не брал книг
+-- PROCEDURE ReportReadersNotTakeBooks
+-- Проверка работы процедуры:
+
+EXECUTE ReportReadersNotTakeBooks
+
+
+
+
 
