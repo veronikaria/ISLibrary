@@ -138,5 +138,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="dbo\inserts.sql" />
+    <None Include="dbo\privileges_operations.sql" />
   </ItemGroup>
 </Project>
